@@ -1,0 +1,12 @@
+@import url("https://fonts.googleapis.com/css2?family=Carter+One&family=Roboto+Slab:wght@100..900&display=swap");
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    @apply bg-[#000C36] font-[Roboto_Slab] text-[rgba(255,255,255,0.87)];
+  }
+
+  body {
+    @apply relative m-0 grid min-h-screen min-w-[320px] place-items-center;
+  }
+}
