@@ -13,7 +13,7 @@ export async function getMovie(userData: string, context: string) {
         description: z.string(),
       }),
       model: google("gemini-2.5-flash"),
-      prompt: `You are the worlds best movie recommender, you will be given user-data and context. Only reply based on the context, please if the context does not provide a good movie reply:'Sorry I don't a movie to recommend'. user-data: ${userData}, context:${context}`,
+      prompt: `You are the worlds best movie recommender, you will be given user-data and context to generate a chatty response as if you were talking to a friend. Do not suggest movies outside the context, please if the context does not provide a good movie reply:'Sorry I don't a movie to recommend'. user-data: ${userData}, context:${context}`,
     });
     return object;
   } catch (error) {

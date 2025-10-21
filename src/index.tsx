@@ -3,6 +3,7 @@ import index from "./index.html";
 import { generateEmbedding, getMovie } from "./utils";
 import { supabase } from "./config";
 import content from "./content";
+import type { PostgrestSingleResponse } from "@supabase/supabase-js";
 
 type MovieData = { id: number; content: string; embedding: number[] };
 
@@ -46,18 +47,21 @@ const server = serve({
         const dataAsString = Object.values(payload).join(" ");
         const embedding = await generateEmbedding(dataAsString);
 
-        const { data, error } = await supabase.rpc("match_movies", {
-          query_embedding: embedding,
-          match_threshold: 0.4,
-          match_count: 1,
-        });
+        const {data, error}: PostgrestSingleResponse<MovieData[]> = await supabase.rpc(
+          "match_movies",
+          {
+            query_embedding: embedding,
+            match_threshold: 0.4,
+            match_count: 3,
+          },
+        );
 
         if (error) {
           throw error;
         }
 
         const userData = JSON.stringify(payload);
-        const aiContext = data[0]?.content || "";
+        const aiContext = data.map(movie => movie.content).join(",");
         const aiRes = await getMovie(userData, aiContext);
 
         return Response.json(aiRes);
